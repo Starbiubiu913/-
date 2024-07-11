@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<link rel="stylesheet" href="/water/css/font.css">
+<link rel="stylesheet" href="/water/css/xadmin.css">
+<script type="text/javascript" src="/water/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/water/js/xadmin.js"></script>
+<script>
+   function getMoney(prices){
+
+	   var start = document.getElementById("start").value;
+	   var over = document.getElementById("over").value;
+	   if(over<=start){
+		   alert("止码不能少于起码");
+	   }else{
+	     var total = (parseInt(over) - parseInt(start))*parseInt(prices);
+	     document.getElementById("money").value = total;
+	   }
+   } 
+</script>
+</head>
+
+<body>
+	<div class="layui-fluid">
+		<div class="layui-row">
+			<form class="layui-form" method="post">	   
+			    <div class="layui-form-item">
+					<label for="name" class="layui-form-label"> <span
+						class="x-red">*</span>姓名</label>
+					<div class="layui-input-inline">
+						<input type="text" id="name" name="name" required=""
+							lay-verify="required" autocomplete="off" class="layui-input" th:value="${record.name}">
+					</div>
+				</div>
+		
+			    <div class="layui-form-item">
+					<label for="room" class="layui-form-label"> <span
+						class="x-red">*</span>房间号</label>
+					<div class="layui-input-inline">
+						<input type="text" id="room" name="room" required=""
+							lay-verify="room" autocomplete="off" class="layui-input" th:value="${house}">
+					</div>
+				</div>	
+
+			    <div class="layui-form-item">
+					<label for="costYear" class="layui-form-label"> <span
+						class="x-red">*</span>年份</label>
+					<div class="layui-input-inline">
+						<input type="text" id="costYear" name="costYear" required=""
+							lay-verify="costYear" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+			    <div class="layui-form-item">
+					<label for="costMonth" class="layui-form-label"> <span
+						class="x-red">*</span>月份</label>
+					<div class="layui-input-inline">
+						<input type="text" id="costMonth" name="costMonth" required=""
+							lay-verify="costMonth" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+								
+			    <div class="layui-form-item">
+					<label for="start" class="layui-form-label"> <span
+						class="x-red">*</span>起码</label>
+					<div class="layui-input-inline">
+						<input type="text" id="start" name="start" required=""
+							lay-verify="start" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+			    <div class="layui-form-item">
+					<label for="over" class="layui-form-label"> <span
+						class="x-red">*</span>止码</label>
+					<div class="layui-input-inline">
+						<input type="text" id="over" name="over" required=""
+							lay-verify="over" autocomplete="off" class="layui-input">
+					</div>
+				</div>								
+
+			    <div class="layui-form-item">
+					<label for="money" class="layui-form-label"> <span
+						class="x-red">*</span>水费</label>
+					<div class="layui-input-inline">
+						<input type="text" id="money" name="money" required=""
+							lay-verify="money" autocomplete="off" class="layui-input" th:onclick="getMoney([[${session.price}]]);"/>
+					</div>
+				</div>
+							
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label"></label>
+					<button class="layui-btn" lay-filter="add" lay-submit="">提交</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		layui.use([ 'form', 'layer' ], function() {
+			$ = layui.jquery;
+			var form = layui.form, layer = layui.layer;
+			//自定义验证规则
+			form.verify({
+				name : function(value) {
+					if (value.length == 0) {
+						return '请输入姓名';
+					}
+				},
+				room : function(value) {
+					if (value.length == 0) {
+						return '请输入房号';
+					}
+				},
+				costYear : function(value) {
+					if (value.length == 0) {
+						return '请输入年份';
+					}
+				},
+				costMonth : function(value) {
+					if (value.length == 0) {
+						return '请输入月份';
+					}
+				}
+				,
+				start : function(value) {
+					if (value.length == 0) {
+						return '请输入起码';
+					}
+				},
+				over : function(value) {
+					if (value.length == 0) {
+						return '请输入止码';
+					}
+				},
+				money : function(value) {
+					if (value.length == 0) {
+						return '请输入金额';
+					}
+				}
+			});
+
+			//监听提交
+			form.on('submit(add)', function(data) {
+				$.ajax({
+				      url:"/water/cost/add",
+				      async: false,
+				      type:"POST",
+				      dataType: "text",
+				      data:data.field,
+				      success: function(data){
+						  layer.alert("增加成功", {
+							  icon : 6
+						  }, function() {
+							  // 获得frame索引
+							  var index = parent.layer.getFrameIndex(window.name);
+							  //关闭当前frame
+							  parent.layer.close();
+							  parent.layer.close(index);
+
+						  });
+				      }
+	                  
+				  });
+
+			    
+				return false;
+			});
+
+		});
+	</script>
+</body>
+
+
+</html>

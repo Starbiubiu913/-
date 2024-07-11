@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.EmpDAO">
+	<insert id="add" parameterType="Emp">
+		insert into emp values(null,#{no},#{name},#{sex},#{tel},#{flat},#{pwd})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from emp where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Emp">
+		update emp set no=#{no},name=#{name},sex=#{sex},tel=#{tel},flat=#{flat},pwd=#{pwd} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Emp" parameterType="int">
+		select * from emp where id=#{id}
+	</select>
+
+	<select id="selectByNo" resultType="Emp" parameterType="java.lang.String">
+		select * from emp where no=#{no}
+	</select>
+
+			
+	<select id="show" resultType="Emp">
+		select * from emp where 1=1
+		<if test="null !=text and ''!=text">
+			and `name` like concat('%',#{text},'%')
+		</if>
+		<if test="null !=flat and ''!=flat">
+			and `flat` =#{flat}
+		</if>
+	</select>
+
+	<select id="find" resultType="Emp" parameterType="java.lang.String"> 
+		select * from emp where name=#{name}
+	</select>
+	
+	<select id="my" resultType="Emp" parameterType="int">
+		select * from emp where id = #{id}
+		<if test="null !=flat and ''!=flat">
+			and `flat` =#{flat}
+		</if>
+	</select>
+</mapper>
+

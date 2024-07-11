@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TousuDAO">
+	<insert id="add" parameterType="Tousu">
+		insert into tousu values(null,#{name},#{room},#{beizhu},#{reply},#{curtime},#{empid},#{emp})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from tousu where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Tousu">
+		update tousu set reply=#{reply} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Tousu" parameterType="int">
+		select * from tousu where id=#{id}
+	</select>
+			
+	<select id="show" resultType="Tousu">
+		select * from tousu where 1=1
+		<if test="null !=text and ''!=text">
+			and `emp` like concat('%',#{text},'%')
+		</if>
+	</select>
+
+	<select id="find" resultType="Tousu" parameterType="java.lang.String">
+		select * from tousu where name=#{name}
+	</select>
+	
+	<select id="my" resultType="Tousu" parameterType="java.lang.String">
+		select * from tousu where room = #{room}
+	</select>
+</mapper>
+

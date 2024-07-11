@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.BasicDAO">
+	<insert id="add" parameterType="Basic">
+		insert into basic values(null,#{price},#{type})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from basic where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Basic">
+		update basic set price=#{price},`type`=#{type} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Basic" parameterType="int">
+		select * from basic where id=#{id}
+	</select>
+			
+	<select id="show" resultType="Basic">
+		select * from basic
+	</select>
+
+</mapper>
+

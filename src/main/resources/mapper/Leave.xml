@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LeaveDAO">
+	<insert id="add" parameterType="Leave">
+		insert into `leave` values(null,#{username},#{userId},#{curtime},#{status},#{remark})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from `leave` where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Leave">
+		update `leave` set remark=#{remark},status=#{status} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Leave" parameterType="int">
+		select * from `leave` where id=#{id}
+	</select>
+			
+	<select id="show" resultType="Leave">
+		select * from `leave` where 1=1
+		<if test="null !=text and ''!=text">
+			and `username` like concat('%',#{text},'%')
+		</if>
+	</select>
+
+	<select id="find" resultType="Leave" parameterType="java.lang.String">
+		select * from `leave` where username=#{title}
+	</select>
+	
+
+</mapper>
+

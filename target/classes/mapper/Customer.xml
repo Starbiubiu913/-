@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CustomerDAO">
+	<insert id="add" parameterType="Customer">
+		insert into customer values(null,#{name},#{sex},#{tel},#{flat},#{danyuan},#{room},#{pwd})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from customer where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Customer">
+		update customer set name=#{name},sex=#{sex},tel=#{tel},flat=#{flat},danyuan=#{danyuan},room=#{room},pwd=#{pwd} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Customer" parameterType="int">
+		select * from customer where id=#{id}
+	</select>
+
+	<select id="findByMobile" resultType="Customer" parameterType="java.lang.String">
+		select * from customer where tel=#{tel}
+	</select>
+	<select id="show" resultType="Customer">
+		select * from customer where 1 =1
+		<if test="null !=text and ''!=text">
+			and `name` like concat('%',#{text},'%')
+		</if>
+		<if test="null !=flat and ''!=flat">
+			and `flat` =#{flat}
+		</if>
+	</select>
+
+	<select id="find" resultType="Customer" parameterType="java.lang.String"> 
+		select * from customer where name=#{name}
+	</select>
+	
+	<select id="my" resultType="Customer" parameterType="int">
+		select * from customer where id = #{id}
+		<if test="null !=text and ''!=text">
+			and `name` like concat('%',#{text},'%')
+		</if>
+		<if test="null !=flat and ''!=flat">
+			and `flat` =#{flat}
+		</if>
+	</select>
+</mapper>
+

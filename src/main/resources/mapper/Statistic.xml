@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.StatisticDAO">
+
+			
+	<select id="house" resultType="java.util.Map">
+		select flat,count(1) people from customer  where 1=1
+		group by flat
+	</select>
+
+	<select id="person" resultType="java.util.Map">
+		select  `name` as person,sum(p.money) money, date_format(curtime,'%Y-%m-%d')  curtime from cost p
+		 where 1 =1 and state='已缴费'
+		GROUP BY `name`,curtime;
+	</select>
+
+	<select id="tousu" resultType="java.util.Map">
+	  select t.emp person,sum(1) num,date_format(curtime,'%Y-%m-%d')  curtime from tousu t
+	 group by t.emp,t.curtime
+	</select>
+
+</mapper>
+

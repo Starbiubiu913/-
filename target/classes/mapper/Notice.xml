@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.NoticeDAO">
+	<insert id="add" parameterType="Notice">
+		insert into notice values(null,#{title},#{content},#{curtime})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from notice where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Notice">
+		update notice set title=#{title},content=#{content} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Notice" parameterType="int">
+		select * from notice where id=#{id}
+	</select>
+			
+	<select id="show" resultType="Notice">
+		select * from notice where 1=1
+		<if test="null !=text and ''!=text">
+			and `title` like concat('%',#{text},'%')
+		</if>
+	</select>
+
+	<select id="find" resultType="Notice" parameterType="java.lang.String"> 
+		select * from notice where title=#{title}
+	</select>
+	
+
+</mapper>
+

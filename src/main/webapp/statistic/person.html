@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="/water/css/font.css">
+        <link rel="stylesheet" href="/water/css/xadmin.css">
+        <script src="/water/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/water/js/xadmin.js"></script>
+        <script type="text/javascript" src="/water/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/water/js/echarts.min.js"></script>
+
+    </head>
+    
+    <body >
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="#">首页</a>
+                <a href="#">统计报表</a>
+                <a>
+                    <cite>住户缴费统计</cite>
+                </a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12" style="height:400px;width: 100%;" id="main">
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+
+        window.onload=function runoob(){
+            var chartDom = document.getElementById('main');
+            var myChart = echarts.init(chartDom);
+            console.log(myChart);
+            $.ajax({
+                url:"/water/statistic/person",
+                async: false,
+                type:"GET",
+                dataType: "json",
+                success: function(data){
+                    console.log("data",data);
+
+                    var option = {
+                        title: {
+                            text: '住户缴费统计'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: data.flat
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data:data.time
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} 元'
+                            }
+                        },
+                        series: data.data
+                    };
+                    console.log(option);
+
+                    myChart.setOption(option);
+
+
+                }
+            });
+        }
+
+    </script>
+
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LiuyanDAO">
+	<insert id="add" parameterType="Liuyan">
+		insert into liuyan values(null,#{name},#{room},#{beizhu},#{reply},#{curtime})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from liuyan where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="Liuyan">
+		update liuyan set reply=#{reply} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="Liuyan" parameterType="int">
+		select * from liuyan where id=#{id}
+	</select>
+			
+	<select id="show" resultType="Liuyan">
+		select * from liuyan where 1=1
+		<if test="null !=text and ''!=text">
+			and `name` like concat('%',#{text},'%')
+		</if>
+	</select>
+
+	<select id="find" resultType="Liuyan" parameterType="java.lang.String"> 
+		select * from liuyan where name=#{name}
+	</select>
+	
+	<select id="my" resultType="Liuyan" parameterType="java.lang.String">
+		select * from liuyan where room = #{room}
+	</select>
+</mapper>
+

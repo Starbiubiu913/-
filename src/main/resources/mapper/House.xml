@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.HouseDAO">
+	<insert id="add" parameterType="House">
+		insert into house values(null,#{flat},#{person})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from house where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="House">
+		update house set flat=#{flat},person=#{person} where id=#{id}
+	</update>
+
+	<select id="findById" resultType="House" parameterType="int">
+		select * from house where id=#{id}
+	</select>
+
+	<select id="selectByFlat" resultType="House" parameterType="java.lang.String">
+		select * from house where flat=#{flat}
+	</select>
+
+
+	<select id="show" resultType="House">
+		select * from house where 1 =1
+		<if test="null !=text and ''!=text">
+			and `flat` like concat('%',#{text},'%')
+		</if>
+	</select>
+
+</mapper>
+

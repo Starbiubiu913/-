@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CostDAO">
+	<insert id="add" parameterType="Cost">
+	INSERT INTO `water`.`cost`(`name`, `person`, `room`, `costYear`, `costMonth`, `start`, `way`, `over`, `money`, `state`, `curtime`)
+	VALUES ( #{name}, #{person},#{room},#{costYear},#{costMonth},#{start},#{way},#{over},#{money},#{state},#{curtime})
+	</insert>
+
+	<delete id="del" parameterType="int">
+		delete from cost where id=#{id}
+	</delete>
+
+	<delete id="delByCustId" parameterType="int">
+		delete from cost where person=#{id}
+	</delete>
+
+	<select id="findById" resultType="Cost" parameterType="int">
+		select * from cost where id=#{id}
+	</select>
+			
+	<update id="update" parameterType="Cost">
+		update cost set name=#{name},room=#{room},costYear=#{costYear},costMonth=#{costMonth},start=#{start},over=#{over},money=#{money} where id=#{id}
+	</update>
+
+	<update id="save" parameterType="Cost">
+		update cost set state=#{state},way=#{way}  where id=#{id}
+	</update>
+	
+	<select id="show" resultType="Cost">
+		select * from cost where 1= 1
+		<if test="null !=text and ''!=text">
+			and `room` like concat('%',#{text},'%')
+		</if>
+		<if test="null !=flat">
+			and `person` in (
+			select c.id from customer c where c.flat=#{flat}
+			)
+		</if>
+	</select>
+		
+	<select id="find" resultType="Cost" parameterType="java.lang.String"> 
+		select * from cost where name=#{name}
+	</select>
+	
+	<select id="my" resultType="Cost" parameterType="java.lang.String">
+		select * from cost where room = #{room}
+	</select>
+</mapper>
+

@@ -1,0 +1,102 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="/water/static/css/font.css">
+<link rel="stylesheet" href="/water/static/css/login.css">
+<link rel="stylesheet" href="/water/static/css/xadmin.css">
+<script type="text/javascript" src="/water/static/js/xadmin.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/water/static/lib/layui/layui.js" charset="utf-8"></script>
+</head>
+<body class="login-bg">
+
+	<div class="login layui-anim layui-anim-up">
+		<div class="message">水费管理系统-登录</div>
+		<div id="darkbannerwrap"></div>
+
+		<form method="post" class="layui-form" action="/water/user/login">
+			<input name="name" placeholder="用户名" type="text" value="admin"
+				lay-verify="required" class="layui-input">
+			<hr class="hr15">
+			<input name="pwd" lay-verify="required" placeholder="密码" value="admin"
+				type="password" class="layui-input">
+			<hr class="hr15">
+			<div class="layui-form-item">
+				<div class="layui-input-inline">
+					<select name="role">
+						<option value="admin">选择角色</option>
+						<option value="管理员" selected>管理员</option>
+						<option value="抄表员">抄表员</option>
+						<option value="住户">住户</option>
+					</select>
+				</div>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+
+			<INPUT id=vercode placeholder="验证码"  style="width:200px;"  type=text name="vercode" lay-verify="required" ><img src="" id="verImg"  onclick="getvCode()"/>
+		<br/><br/>
+			<input value="登录" lay-submit lay-filter="login" style="width: 100%;" type="submit"/>
+			<hr class="hr20">
+
+			<th:if test="${null !=msg}">
+				<div style="color:red" th:text="${msg}"></div>
+			</th:if>
+		</form>
+	</div>
+
+	<script>
+		$(function() {
+			layui.use('form', function() {
+				var form = layui.form;
+				//监听提交
+				// form.on('submit(login)', function(data) {
+				// 	console.log(JSON.stringify(data));
+				// 	//return false;
+				// });
+			});
+		})
+
+		function member_reg(obj, id) {
+			layer.confirm('确认要删除吗？', function(index) {
+				$.ajax({
+					url : "/stu/delete/?id=" + id,
+					async : false,
+					type : "GET",
+					dataType : "text",
+					success : function(data) {
+					}
+				});
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!', {
+					icon : 1,
+					time : 1000
+				});
+			});
+		}
+
+		//为url添加时间戳
+		function timestamp(url) {
+			var getTimestamp = new Date().getTime();
+			if (url.indexOf("?") > -1) {
+				url = url + "&timestamp=" + getTimestamp
+			} else {
+				url = url + "?timestamp=" + getTimestamp
+			}
+			return url;
+		};
+
+		function getvCode() {
+			console.log(location.origin)
+			document.getElementById("verImg").src = timestamp(location.origin+"/water/user/verifyCode");
+		}
+		getvCode();
+	</script>
+</body>
+</html>
