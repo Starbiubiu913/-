@@ -1,1 +1,1 @@
-alter table basic  add column `type` varchar(255) DEFAULT '居民用电';
+### 电力收费管理系统
